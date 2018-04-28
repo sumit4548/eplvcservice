@@ -26,15 +26,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.eplvc.eplvcservice.capturedphotoes.EplvcCapturedPhotos;
-import com.eplvc.eplvcservice.capturedphotoes.EplvcImage;
-import com.eplvc.eplvcservice.capturedphotoes.EplvcImageRepo;
-import com.eplvc.eplvcservice.lead.EplvcLead;
-import com.eplvc.eplvcservice.lead.EplvcLeadService;
-import com.eplvc.eplvcservice.lead.LeadStatus;
-import com.eplvc.eplvcservice.lead.Status;
-import com.eplvc.eplvcservice.session.EplvcSession;
-import com.eplvc.eplvcservice.session.EplvcSessionService;
+import com.eplvc.eplvcservice.entity.EplvcCapturedPhotos;
+import com.eplvc.eplvcservice.entity.EplvcLead;
+import com.eplvc.eplvcservice.entity.EplvcSession;
+import com.eplvc.eplvcservice.repositories.EplvcImageRepo;
+import com.eplvc.eplvcservice.service.EplvcLeadService;
+import com.eplvc.eplvcservice.service.EplvcSessionService;
+import com.eplvc.eplvcservice.enums.Status;
+import com.eplvc.eplvcservice.model.EplvcImage;
+import com.eplvc.eplvcservice.model.LeadStatus;
 
 @RestController
 public class LeadController {
