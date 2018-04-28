@@ -1,4 +1,4 @@
-package com.eplvc.eplvcservice.lead;
+package com.eplvc.eplvcservice.enums;
 
 public enum camera_permission_status {
 	
