@@ -1,6 +1,6 @@
 package com.eplvc.eplvcservice.enums;
 
-public enum camera_permission_status {
+public enum CameraPermissionStatus {
 	
 	GRNATED,
 	DENIED;
