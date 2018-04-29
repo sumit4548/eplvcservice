@@ -10,7 +10,6 @@ import java.text.SimpleDateFormat;
 
 import sun.misc.BASE64Decoder;
 import java.util.List;
-import java.util.UUID;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.Cookie;
