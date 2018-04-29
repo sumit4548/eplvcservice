@@ -14,6 +14,7 @@ import java.util.UUID;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,6 @@ import com.eplvc.eplvcservice.entity.EplvcLead;
 import com.eplvc.eplvcservice.entity.EplvcSession;
 import com.eplvc.eplvcservice.repositories.EplvcImageRepo;
 import com.eplvc.eplvcservice.service.EplvcLeadService;
-import com.eplvc.eplvcservice.service.EplvcSessionService;
 import com.eplvc.eplvcservice.enums.Status;
 import com.eplvc.eplvcservice.model.EplvcImage;
 import com.eplvc.eplvcservice.model.LeadStatus;
@@ -41,10 +41,7 @@ public class LeadController {
 	
 	@Autowired
 	EplvcLeadService service;
-	
-	@Autowired
-	EplvcSessionService sessionService;
-	
+
 	@Autowired
 	EplvcImageRepo imageRepo;
 	
@@ -61,7 +58,7 @@ public class LeadController {
 			@RequestParam("premiumFrequency") String premiumFrequency,
 			@RequestParam("premiumTerm") String premiumTerm,
 			@RequestParam("policyTerm") String policyTerm,
-			HttpServletResponse response
+			HttpServletRequest request
 			){
 		
 		
@@ -87,11 +84,6 @@ public class LeadController {
 			System.out.println("User has alredy completed Process"); // return thank you page.
 		}
 		
-		String SessionID = UUID.randomUUID().toString();
-		response.addCookie(new Cookie("ID", SessionID));
-		
-		sessionService.addSession(leadId,SessionID);
-		
 		service.addLead(lead);
 		
 		return "WelcomePage";
@@ -103,11 +95,6 @@ public class LeadController {
 		return service.getAllLeads();	
 	}
 	
-	
-	@RequestMapping("/getAllSessions")
-	public List<EplvcSession> returnAllSessions() {
-		return sessionService.getAllSessions();
-	}
 	
 	@RequestMapping("/getAllPhotoes")
 	public List<EplvcCapturedPhotos> returnAllPhotoes() {
@@ -122,11 +109,6 @@ public class LeadController {
 		
 	}
 	
-	@RequestMapping("/CheckSessionStatus")
-	public boolean returnStatus(@RequestParam("leadID") String leadId,
-			@RequestParam("sessionId") String sessionId) {
-		return sessionService.isSessionExpired(leadId, sessionId);
-	}
 	
 	@RequestMapping(method=RequestMethod.POST ,value ="/updateLeadStatus")
 	public void updateStatus(@RequestBody LeadStatus leadStatus) {

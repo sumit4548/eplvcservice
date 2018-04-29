@@ -13,14 +13,17 @@ import java.util.HashMap;
 public class SpringBooJDBCSessionController{
     @GetMapping("/viewSessionData")                     // it will handle all request for /welcome
     public java.util.Map<String,Integer> start(HttpServletRequest request) {
-        Integer integer =(Integer) request.getSession().getAttribute("hitCounter"); 
+        
+    	System.out.println(request.getSession().getId());
+    	
+    	Integer integer =(Integer) request.getSession().getAttribute("hitCounter1"); 
         if(integer==null){
             integer=new Integer(0);
             integer++;
-            request.getSession().setAttribute("hitCounter",integer);  // it will write data to tables
+            request.getSession().setAttribute("hitCounter1",integer);  // it will write data to tables
         }else{
             integer++;
-            request.getSession().setAttribute("hitCounter",integer);  // it will write data to tables
+            request.getSession().setAttribute("hitCounter1",integer);  // it will write data to tables
         }
         java.util.Map<String,Integer> hitCounter=new HashMap<>();
         hitCounter.put("Hit Counter",integer);
