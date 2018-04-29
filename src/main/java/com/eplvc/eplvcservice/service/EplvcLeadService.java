@@ -72,7 +72,7 @@ public class EplvcLeadService {
 	
 	public boolean isProcessCompleted(EplvcLead lead) {
 	
-		Optional<EplvcLead>  dblead = leadRepo.findById(lead.getLeadId());
+		Optional<EplvcLead>  dblead = leadRepo.findByLeadId(lead.getLeadId());
 				
 		if(dblead.isPresent()) {
 			if(dblead.get().getStatus() == Status.POLICY_DETAILS_VERIFIED 
@@ -112,14 +112,18 @@ public class EplvcLeadService {
 			throw new ServiceException("Invalid Request : Trying to update lead id , which does not exists");
 		}
 		
+		leadRepo.save(lead);
+		
 	}
 	
-	public EplvcLead getLeadById(String leadId) {
+	public EplvcLead getLeadById(String leadId) throws ServiceException {
 		
 		Optional<EplvcLead> lead = leadRepo.findById(leadId);
 		
-		if(lead == null)
-			return null;
+		if(!lead.isPresent()) {
+			throw new ServiceException("Specified Lead ID does not exists");
+		}
+			
 		
 		return lead.get();
 	}

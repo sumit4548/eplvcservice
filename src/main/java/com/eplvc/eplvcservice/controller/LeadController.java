@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,22 +23,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eplvc.eplvcservice.customexceptions.ServiceException;
+import com.eplvc.eplvcservice.customexceptions.SessionExpiredException;
 import com.eplvc.eplvcservice.entity.EplvcCapturedPhotos;
 import com.eplvc.eplvcservice.entity.EplvcLead;
 import com.eplvc.eplvcservice.repositories.EplvcImageRepo;
+import com.eplvc.eplvcservice.service.EplvcImageService;
 import com.eplvc.eplvcservice.service.EplvcLeadService;
 import com.eplvc.eplvcservice.enums.Status;
 import com.eplvc.eplvcservice.model.EplvcImage;
 import com.eplvc.eplvcservice.model.LeadStatus;
 
-@RestController
+@Controller
 public class LeadController {
 	
 	@Autowired
 	EplvcLeadService service;
 
 	@Autowired
-	EplvcImageRepo imageRepo;
+	EplvcImageService imageService;
 	
 	@RequestMapping("/")
 	public String validateAndSaveLead (
@@ -69,7 +72,7 @@ public class LeadController {
 		lead.setLastUpdatedAt(new Date());
 		
 		if(service.validateEplvcLead(lead)==false) 
-			return "Validation Failed"; // retrun error page.
+			return "ValidationFailed"; // retrun error page.
 			
 		if(service.isProcessCompleted(lead)==true) {
 			System.out.println("User has alredy completed Process"); // return thank you page.
@@ -82,66 +85,6 @@ public class LeadController {
 		
 		return "WelcomePage";
 		
-	}
-	
-	@RequestMapping("/getAllLeads")
-	public List<EplvcLead> returnAllLeads() {
-		return service.getAllLeads();	
-	}
-	
-	
-	@RequestMapping("/getAllPhotoes")
-	public List<EplvcCapturedPhotos> returnAllPhotoes() {
-		 
-		List<EplvcCapturedPhotos> lstImageList = new ArrayList<EplvcCapturedPhotos>();
-		
-		for(EplvcCapturedPhotos photo: imageRepo.findAll()) {
-			lstImageList.add(photo);
-		}
-		
-		return lstImageList;
-		
-	}
-	
-	
-	@RequestMapping(method=RequestMethod.POST ,value ="/updateLeadStatus")
-	public void updateStatus(@RequestBody LeadStatus leadStatus) throws ServiceException {
-		
-		EplvcLead lead = service.getLeadById(leadStatus.getLeadId());
-		lead.setStatus(leadStatus.getStatus());
-		lead.setLastUpdatedAt(new Date());
-		
-		service.updateLead(lead);	
-	
-	}
-	
-	@RequestMapping(method=RequestMethod.POST ,value ="/updateCapturedPhotoStatus")
-	public void updateCapturedPhotoStatus(@RequestBody EplvcImage eplvcImage) throws IOException {
-		
-		@SuppressWarnings("restriction")
-		BASE64Decoder decoder = new BASE64Decoder();
-		@SuppressWarnings("restriction")
-		byte[] imageByte = decoder.decodeBuffer(eplvcImage.getBase64Image());
-		ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
-		BufferedImage image = ImageIO.read(bis);
-		bis.close();
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
-		
-		
-		File outputfile = new File("/Users/sumitagrawal/ICICI/Eplvc-Images/"+eplvcImage.getLeadId()+"_"+sdf.format(new Date())+".png");
-		
-		ImageIO.write(image, "png", outputfile);
-		
-		EplvcCapturedPhotos ecp = new EplvcCapturedPhotos();
-		
-		ecp.setLeadId(eplvcImage.getLeadId());
-		ecp.setBase64ImagePath(outputfile.getAbsolutePath());
-		ecp.setFaceDetected(eplvcImage.isFaceDetected());
-		ecp.setCapturedStage(eplvcImage.getCapturedStage());
-
-		imageRepo.save(ecp);
-	
 	}
 	
 	
