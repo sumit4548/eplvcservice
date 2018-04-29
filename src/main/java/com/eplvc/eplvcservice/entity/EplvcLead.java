@@ -4,11 +4,13 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import com.eplvc.eplvcservice.enums.Status;
 
 
 @Entity
+@Table(name="Eplvc_Call_Log")
 public class EplvcLead {
 	
 	@Id	
@@ -22,6 +24,7 @@ public class EplvcLead {
 	private String premiumTerm;
 	private String policyTerm;
 	private Status status;
+	private Date createdAt;
 	private Date lastUpdatedAt;
 
 	public EplvcLead() {
@@ -131,5 +134,13 @@ public class EplvcLead {
 
 	public void setLastUpdatedAt(Date lastUpdatedAt) {
 		this.lastUpdatedAt = lastUpdatedAt;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
 	}
 }

@@ -1,8 +1,12 @@
 package com.eplvc.eplvcservice.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+
+import org.springframework.transaction.annotation.Transactional;
 
 import com.eplvc.eplvcservice.enums.CapturedStage;
 
@@ -10,7 +14,12 @@ import com.eplvc.eplvcservice.enums.CapturedStage;
 public class EplvcCapturedPhotos {
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	private String leadId;
+	private String base64ImagePath;
+	private CapturedStage capturedStage;
+	private boolean faceDetected;
 	
 	public Long getId() {
 		return id;
@@ -18,10 +27,6 @@ public class EplvcCapturedPhotos {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	private String leadId;
-	private String base64ImagePath;
-	private CapturedStage capturedStage;
-	private boolean faceDetected;
 	
 	public String getLeadId() {
 		return leadId;
