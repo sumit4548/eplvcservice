@@ -32,7 +32,7 @@ public class EplvcUpdateInfoController {
 	public void updateStatus(@RequestBody LeadStatus leadStatus,
 			HttpServletRequest request) throws ServiceException, SessionExpiredException {
 		
-		if(request.getSession().isNew() || request.getSession().getAttribute("LeadID").toString().equalsIgnoreCase(leadStatus.getLeadId()))
+		if(request.getSession().isNew() || !request.getSession().getAttribute("LeadID").toString().equalsIgnoreCase(leadStatus.getLeadId()))
 			throw new SessionExpiredException("Session is not valid");
 		
 		EplvcLead lead = service.getLeadById(leadStatus.getLeadId());
@@ -47,7 +47,7 @@ public class EplvcUpdateInfoController {
 	public void updateCapturedPhotoStatus(@RequestBody EplvcImage eplvcImage,
 			HttpServletRequest request) throws IOException, SessionExpiredException {
 		
-		if(request.getSession().isNew() || request.getSession().getAttribute("LeadID").toString().equalsIgnoreCase(eplvcImage.getLeadId()))
+		if(request.getSession().isNew() || !request.getSession().getAttribute("LeadID").toString().equalsIgnoreCase(eplvcImage.getLeadId()))
 			throw new SessionExpiredException("Session is not valid");
 		
 		imageService.saveImages(eplvcImage);

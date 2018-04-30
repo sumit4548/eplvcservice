@@ -16,22 +16,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
-import com.eplvc.eplvcservice.customexceptions.ServiceException;
-import com.eplvc.eplvcservice.customexceptions.SessionExpiredException;
-import com.eplvc.eplvcservice.entity.EplvcCapturedPhotos;
 import com.eplvc.eplvcservice.entity.EplvcLead;
-import com.eplvc.eplvcservice.repositories.EplvcImageRepo;
-import com.eplvc.eplvcservice.service.EplvcImageService;
 import com.eplvc.eplvcservice.service.EplvcLeadService;
 import com.eplvc.eplvcservice.enums.Status;
-import com.eplvc.eplvcservice.model.EplvcImage;
-import com.eplvc.eplvcservice.model.LeadStatus;
 
 @Controller
 public class LeadController {
@@ -39,9 +29,6 @@ public class LeadController {
 	@Autowired
 	EplvcLeadService service;
 
-	@Autowired
-	EplvcImageService imageService;
-	
 	@RequestMapping("/")
 	public String validateAndSaveLead (
 			@RequestParam("leadID") String leadId,
